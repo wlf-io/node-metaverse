@@ -125,7 +125,7 @@ export class Bot
         const response: LoginResponse = await loginHandler.Login(this.loginParams);
         this._currentRegion = response.region;
         this._agent = response.agent;
-        this._clientCommands = this.createClientCommands(response.region, response.agent);
+        this._clientCommands = new ClientCommands(response.region, response.agent, this);
         this.currentRegion.clientCommands = this._clientCommands;
         return response;
     }
@@ -134,7 +134,7 @@ export class Bot
     {
         this.closeCircuit();
         this._currentRegion = region;
-        this._clientCommands = this.createClientCommands(this.currentRegion, this.agent);
+        this._clientCommands = new ClientCommands(this.currentRegion, this.agent, this);
         this._currentRegion.clientCommands = this._clientCommands;
         if (this.ping !== null)
         {
@@ -143,10 +143,6 @@ export class Bot
         }
 
         await this.connectToSim(requested);
-    }
-
-    protected createClientCommands(region: Region, agent: Agent) {
-        return new ClientCommands(region, agent, this); 
     }
 
     waitForEventQueue(timeout: number = 1000): Promise<void>
