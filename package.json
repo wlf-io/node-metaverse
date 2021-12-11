@@ -1,6 +1,6 @@
 {
-  "name": "@caspertech/node-metaverse",
-  "version": "0.5.29",
+  "name": "@wlfio/node-metaverse",
+  "version": "0.5.32",
   "description": "A node.js interface for Second Life.",
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
@@ -20,7 +20,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CasperTech/node-metaverse.git"
+    "url": "git+https://github.com/wlf-io/node-metaverse.git"
   },
   "devDependencies": {
     "@angular-eslint/eslint-plugin": "^12.5.0",
