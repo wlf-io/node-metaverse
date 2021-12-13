@@ -181,6 +181,9 @@ export class Agent
             return;
         }
         const circuit = this.currentRegion.circuit;
+        if(!circuit.active){
+            return;
+        }
         const agentUpdate: AgentUpdateMessage = new AgentUpdateMessage();
         agentUpdate.AgentData = {
             AgentID: this.agentID,
