@@ -23,7 +23,7 @@ export class ObjectResolver
 
     }
 
-    resolveObjects(objects: GameObject[], forceResolve: boolean = false, skipInventory = false, log = false): Promise<GameObject[]>
+    resolveObjects(objects: GameObject[], forceResolve: boolean = false, skipInventory = false, log = false, recurse = true): Promise<GameObject[]>
     {
         return new Promise<GameObject[]>((resolve) =>
         {
@@ -38,7 +38,7 @@ export class ObjectResolver
             for (const obj of objects)
             {
                 this.region.objects.populateChildren(obj);
-                this.scanObject(obj, objs);
+                this.scanObject(obj, objs, recurse);
             }
 
             const queueObject = (id: number) =>
@@ -202,13 +202,13 @@ export class ObjectResolver
         });
     }
 
-    private scanObject(obj: GameObject, map: { [key: number]: GameObject }): void
+    private scanObject(obj: GameObject, map: { [key: number]: GameObject }, recurse = true): void
     {
         const localID = obj.ID;
         if (!map[localID])
         {
             map[localID] = obj;
-            if (obj.children)
+            if (obj.children && recurse)
             {
                 for (const child of obj.children)
                 {
