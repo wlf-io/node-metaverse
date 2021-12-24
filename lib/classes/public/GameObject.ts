@@ -2028,4 +2028,22 @@ export class GameObject implements IGameObjectData
         const ack = this.region.circuit.sendMessage(deselectObject, PacketFlags.Reliable);
         return this.region.circuit.waitForAck(ack, 10000);
     }
+
+    getCumulativePosition(): Vector3 {
+        if(this.ParentID){
+            try{
+                const parent = this.region.objects.getObjectByLocalID(this.ParentID);
+                const pPos = parent.Position || Vector3.getZero();
+                const pos = this.Position || Vector3.getZero();
+                return new Vector3([pPos.x + pos.x,pPos.y + pos.y, pPos.z + pos.z]);
+            } catch {
+
+            }
+        }
+        return this.Position || Vector3.getZero();
+    }
+
+    getCumulativeRotation(): Quaternion {
+        return this.Rotation || Quaternion.getIdentity();
+    }
 }

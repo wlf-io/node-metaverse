@@ -77,6 +77,10 @@ export class Avatar extends AvatarQueryResult
         }
     }
 
+    get localID(): number|undefined {
+        return this._gameObject?.ID;
+    }
+
     get isVisible(): boolean
     {
         return this._isVisible;
@@ -148,7 +152,7 @@ export class Avatar extends AvatarQueryResult
         }
         if (obj.Position !== undefined && obj.Rotation !== undefined)
         {
-            this.setGeometry(obj.Position, obj.Rotation);
+            this.setGeometry(obj.getCumulativePosition(), obj.getCumulativeRotation());
         }
         if (obj.NameValue['Title'] !== undefined)
         {

@@ -39,6 +39,8 @@ export class InventoryFolder
     agent: Agent;
     library: InventoryLibrary;
 
+    populated = false;
+
     private callbackID = 1;
 
     private inventoryBase: {
@@ -391,28 +393,17 @@ export class InventoryFolder
         });
     }
 
-    populate(useCached = true): Promise<void>
-    {
-        if (!useCached)
-        {
-            return this.populateInternal();
+    async populate(useCached = true): Promise<void> {
+        if (!useCached) {
+            await this.populateInternal();
+        } else {
+            try {
+                await this.loadCache();
+            } catch (e) {
+                await this.populateInternal();
+            }
         }
-        return new Promise<void>((resolve, reject) =>
-        {
-            this.loadCache().then(() =>
-            {
-                resolve();
-            }).catch(() =>
-            {
-                this.populateInternal().then(() =>
-                {
-                    resolve();
-                }).catch((erro: Error) =>
-                {
-                    reject(erro);
-                });
-            });
-        });
+        this.populated = true;
     }
 
     private uploadInventoryAssetLegacy(assetType: AssetType, inventoryType: InventoryType, data: Buffer, name: string, description: string, flags: InventoryItemFlags): Promise<UUID>
